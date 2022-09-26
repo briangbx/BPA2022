@@ -1,5 +1,5 @@
-Nseq=47; %Longitud de la secuencia
-root=5; %semilla de la secuencia
+Nseq=79; %Longitud de la secuencia
+root=31; %semilla de la secuencia
 ZCseq=zadoffChuSeq(root,Nseq)';
 bitRound=12; %número de bits del conversor
 
@@ -26,14 +26,34 @@ xQ1=reshape(kron(real(totalSeq),sQ1)',1,[]);
 xI2=reshape(kron(imag(totalSeq),sI2)',1,[]);
 xQ2=reshape(kron(real(totalSeq),sQ2)',1,[]);
 
-modSeq1=xI1-xQ1;
-modSeq2=xI2-xQ2;
+modSeq1=xI1-xQ1; %Secuencia modulada con onda cuadrada
+modSeq2=xI2-xQ2; %Secuencia modulada con onda senoidal
 
+modSeq1=round(((modSeq1+2)/4)*2^bitRound);
+modSeq2=round(((modSeq2+1)/2)*2^bitRound);
 
+modSeq1=modSeq1*4/(2^bitRound)-2;
+modSeq2=modSeq2*2/(2^bitRound)-1;
 
-%figure;
-%subplot(1,2,1);plot(t,modSeq1); 
-%subplot(1,2,2);plot(t,modSeq2);
+modZCseq1=reshape(kron(imag(ZCseq),sI1)',1,[])-reshape(kron(real(ZCseq),sQ1)',1,[]);
+modZCseq2=reshape(kron(imag(ZCseq),sI2)',1,[])-reshape(kron(real(ZCseq),sQ2)',1,[]);
+
+modZCseq1=round(((modZCseq1+2)/4)*2^bitRound);
+modZCseq2=round(((modZCseq2+1)/2)*2^bitRound);
+
+modZCseq1=modZCseq1*4/(2^bitRound)-2;
+modZCseq2=modZCseq2*2/(2^bitRound)-1;
+
+[c1,lag1]=xcorr(modSeq1,modZCseq1);
+[c2,lag2]=xcorr(modSeq1,modZCseq2);
+
+figure;
+subplot(2,1,1);plot(lag1,c1); 
+subplot(2,1,2);plot(lag2,c2);
+
+figure;
+subplot(2,1,1);plot(t,modSeq1); 
+subplot(2,1,2);plot(t,modSeq2);
 
 %figure;
 %fourier_transform(modSeq1,fs,'frec');title("TF de la secuencia modulada con onda cuadrada")
