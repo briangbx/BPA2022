@@ -1,8 +1,8 @@
-Nseq=79; %Longitud de la secuencia
-root=31; %semilla de la secuencia
+Nseq=313; %Longitud de la secuencia
+root=17; %semilla de la secuencia
 ZCseq=zadoffChuSeq(root,Nseq)';
 bitRound=12; %número de bits del conversor
-nSim=10;
+nSim=1;
 
 A=randomMatrix(1,21);
 B=randomMatrix(1,30);
@@ -48,13 +48,16 @@ modZCseq2=modZCseq2*2/(2^bitRound)-1;
 [c1,lag1]=xcorr(modSeq1,modZCseq1); %correlación de las señales
 [c2,lag2]=xcorr(modSeq1,modZCseq2);
 
-figure;
-subplot(2,1,1);plot(lag1,c1); 
-subplot(2,1,2);plot(lag2,c2);
+c1=c1/(abs(max(c1)));
+c2=c2/(abs(max(c2)));
 
 figure;
-subplot(2,1,1);plot(t,modSeq1); 
-subplot(2,1,2);plot(t,modSeq2);
+subplot(2,1,1);plot(lag1,c1);title("Correlacion de la secuencia modulada con onda cuadrada");
+subplot(2,1,2);plot(lag2,c2);title("Correlacion de la secuencia modulada con onda senoidal");
+
+%figure;
+%subplot(2,1,1);plot(t,modSeq1); 
+%subplot(2,1,2);plot(t,modSeq2);
 
 figure;
 fourier_transform(modSeq1,fs,'frec');title("TF de la secuencia modulada con onda cuadrada")
