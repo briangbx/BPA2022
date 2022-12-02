@@ -5,7 +5,7 @@ Nseq=313; %Longitud de la secuencia
 root=1; %semilla de la secuencia
 ZCseq=zadoffChuSeq(root,Nseq)';
 bitRound=4; %número de bits del conversor
-nSim=1;
+%nSim=1;
 
 A=randomMatrix(1,21);
 B=randomMatrix(1,30);
