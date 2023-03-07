@@ -2,11 +2,11 @@ clear
 close all
 
 nSeq=149; %Longitud de la secuencia
-root=primes(149); %semilla de la secuencia
+root=primes(233); %semilla de la secuencia
 bitRound=10; %número de bits del conversor
 nSim=5;      %número de ciclos por símbolo
-signalNoiseR= 100;
-nTransmisores=5;
+signalNoiseR=100;   %Relacion señal ruido para el ruido blanco gaussiano
+nTransmisores=5;    %Numero de transmisores
 
 fc=110e3; %frecuencia de la señal portadora
 tc=1/fc; %periodo de la señal portadora
@@ -23,7 +23,7 @@ end
 
 modZCseq=zeros(nTransmisores,nSeq*length(sI));
 for i=1:nTransmisores
-    modZCseq(i,:)=modularSecuencia(ZCseq(i,:),sI,sQ,bitRound,signalNoiseR);
+    modZCseq(i,:)=modularSecuencia(ZCseq(i,:),sI,sQ,0,signalNoiseR);
 end
 
 modTotalSeq=reshape(modZCseq',1,[]);
@@ -48,9 +48,11 @@ function modSeq = modularSecuencia(seq,sampleI,sampleQ,bR,noise)
     xQ=reshape(kron(real(seq),sampleQ)',1,[]);
 
     modSeq=xI-xQ; %Secuencia modulada con onda cuadrada
-
-    modSeq=round((modSeq-min(modSeq))/(max(modSeq)-min(modSeq))*(2^bR-1))-(2^(bR-1)-1/2);  %Se simula el efecto de cuantizar la secuencia
-    modSeq=modSeq/(2^bR-1); %Se devuelve a la secuencia a valores aproximadamente de la misma magnitud original
+    
+    if bR>0
+        modSeq=round((modSeq-min(modSeq))/(max(modSeq)-min(modSeq))*(2^bR-1))-(2^(bR-1)-1/2);  %Se simula el efecto de cuantizar la secuencia
+        modSeq=modSeq/(2^bR-1); %Se devuelve a la secuencia a valores aproximadamente de la misma magnitud original
+    end
     modSeq=modSeq/(abs(max(modSeq)));
 
     modSeq=awgn(modSeq,noise,'measured');
