@@ -60,7 +60,7 @@ end
 
 %Se crea un vector con la secuencia completa rodeada por ceros de donde se
 %tomaran los vectores cola
-seqPad=[zeros(1,length(modTotalSeq)-1) modTotalSeq zeros(1,length(modTotalSeq)-1)];
+seqPad=[zeros(1,length(modTotalSeq)-1) modTotalSeq zeros(1,length(modZCseq)-1)];
 cola=zeros(1,length(modTotalSeq));
 
 for i=1:nTransmisores

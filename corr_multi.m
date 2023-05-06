@@ -42,9 +42,10 @@ for i=1:nTransmisores
     desfase1=zeros(1,(i-1)*gap);
     desfase2=zeros(1,(nTransmisores-i)*gap);
     modTotalSeq=modTotalSeq+[desfase1 modZCseq(i,:) desfase2];
+    clear desfase1 desfase2
 end
 
-modTotalSeq=awgn(modTotalSeq,signalNoiseR,'measured');
+%modTotalSeq=awgn(modTotalSeq,signalNoiseR,'measured');
 
 corr=zeros(nTransmisores,2*length(modTotalSeq)-1);
 lag=corr;
